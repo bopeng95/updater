@@ -1,0 +1,19 @@
+{
+  "name": "@bopeng95/updater",
+  "version": "1.0.0",
+  "description": "stable or major updates for your package.json",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bopeng95/updater.git"
+  },
+  "author": "Bo Peng",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/bopeng95/updater/issues"
+  },
+  "homepage": "https://github.com/bopeng95/updater#readme"
+}
