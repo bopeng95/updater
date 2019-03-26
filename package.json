@@ -15,5 +15,16 @@
   "bugs": {
     "url": "https://github.com/bopeng95/updater/issues"
   },
-  "homepage": "https://github.com/bopeng95/updater#readme"
+  "homepage": "https://github.com/bopeng95/updater#readme",
+  "preferGlobal": true,
+  "bin": {
+    "upd": "./index.js"
+  },
+  "dependencies": {
+    "chalk": "^2.4.2",
+    "ipt": "^2.1.1",
+    "read-pkg": "^5.0.0",
+    "semver": "^5.6.0",
+    "yargs": "^13.2.2"
+  }
 }

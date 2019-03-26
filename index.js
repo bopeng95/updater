@@ -1,0 +1,26 @@
+#!/usr/bin/env node
+const path = require('path');
+const Packages = require('./packages');
+const { argv } = require('yargs');
+const { cwd } = process;
+const Aid = require('./helper');
+const pkg = new Packages();
+
+process.stdin.on('keypress', (ch, key) => {
+    if(key && key.name === 'escape') { Aid.out('goodbye (◕‿◕✿)'); }
+});
+
+if(argv.v || argv.version) { Aid.version(); }
+
+const location = (argv._[0]) ? path.join(cwd(), argv._[0]) : cwd();
+const { devDependencies, dependencies } = Aid.retrievePackageInfo(location);
+
+if(devDependencies === undefined && dependencies === undefined) Aid.error('No dependencies in this package.json');
+pkg.dev = (devDependencies) ? Aid.parseVersions(devDependencies) : null;
+pkg.dep = (dependencies) ? Aid.parseVersions(dependencies) : null;
+
+pkg.getLongestLength();
+pkg.printAll();
+
+// const test = execSync('npm v chalk@1 version', { encoding: 'utf-8' });
+// log(test);
