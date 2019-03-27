@@ -16,6 +16,7 @@
     "url": "https://github.com/bopeng95/updater/issues"
   },
   "homepage": "https://github.com/bopeng95/updater#readme",
+  "keywords": ["semver", "update", "updater", "dependencies", "packages", "npm", "process", "cli"],
   "preferGlobal": true,
   "bin": {
     "upd": "./index.js"

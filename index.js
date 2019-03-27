@@ -5,6 +5,7 @@ const { argv } = require('yargs');
 const { cwd } = process;
 const Aid = require('./helper');
 const { execSync } = require('child_process');
+const semver = require('semver');
 const pkg = new Packages();
 
 process.stdin.on('keypress', (ch, key) => {
@@ -20,4 +21,8 @@ if(devDependencies === undefined && dependencies === undefined) Aid.error('No de
 pkg.storeData(devDependencies, dependencies);
 pkg.getLongestLength();
 pkg.printAll();
+
+// const x = semver.valid(semver.coerce('7.0.0-bridge.0'));
+// const y = execSync(`npm v babel-core@7 version`, {encoding: 'utf-8'});
+// console.log(y);
 
