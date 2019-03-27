@@ -1,7 +1,5 @@
-const semver = require('semver');
 const chalk = require('chalk');
 const readPkg = require('read-pkg');
-const { execSync } = require('child_process');
 const log = console.log;
 
 module.exports = {
@@ -24,14 +22,4 @@ module.exports = {
             process.exit(1);
         }
     },
-    parseVersions: function(obj) {
-        const result = {};
-        for(const key in obj) {
-            result[key] = {
-                curr: semver.valid(semver.coerce(obj[key])),
-                minor: '',
-                major: '',
-            }
-        } return result;
-    }
 }
