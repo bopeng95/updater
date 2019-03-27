@@ -4,7 +4,7 @@
   "description": "stable or major updates for your package.json",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha"
   },
   "repository": {
     "type": "git",
@@ -16,7 +16,16 @@
     "url": "https://github.com/bopeng95/updater/issues"
   },
   "homepage": "https://github.com/bopeng95/updater#readme",
-  "keywords": ["semver", "update", "updater", "dependencies", "packages", "npm", "process", "cli"],
+  "keywords": [
+    "semver",
+    "update",
+    "updater",
+    "dependencies",
+    "packages",
+    "npm",
+    "process",
+    "cli"
+  ],
   "preferGlobal": true,
   "bin": {
     "upd": "./index.js"
@@ -28,5 +37,9 @@
     "read-pkg": "^5.0.0",
     "semver": "^5.6.0",
     "yargs": "^13.2.2"
+  },
+  "devDependencies": {
+    "chai": "^4.2.0",
+    "mocha": "^6.0.2"
   }
 }
