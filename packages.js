@@ -32,41 +32,38 @@ class Packages {
 	}
 	
 	store(key, d, type, b) {
-		b.tick();
 		const current = semver.valid(semver.coerce(d[key]));
 		let maj = semver.valid(semver.coerce(execSync(`npm v ${key} version`, { encoding: 'utf-8' })));
 		maj = (maj === current) ? this.latest : maj;
 		let min; 
-		b.tick();
 		if(maj === this.latest) min = this.latest;
 		else if(maj.split('.')[0] <= current.split('.')[0]) min = maj;
 		else {
 			min = execSync(`npm v ${key}@${current.split('.')[0]} version`, { encoding: 'utf-8' }).split('\n');
 			min = semver.valid(semver.coerce(min[min.length-2]));
 			min = (min === current) ? this.latest : min;
-		}; b.tick();
+		};
 		if(min !== this.latest || maj !== this.latest) { this.everything = true; }
-		type[key] = { curr: current, minor: min, major: maj };
+		type[key] = { curr: current, minor: min, major: maj }; b.tick();
 	}
 
 	storeData(dev, dep) {
 		const devLen = (dev) ? Object.keys(dev).length : 0;
 		const depLen = (dep) ? Object.keys(dep).length : 0;
-		log();
-		const bar = new ProgressBar('Retrieving Data [:bar] :percent', {
-			total: (devLen + depLen) * 3 + 3, 
+		const bar = new ProgressBar('Retrieving Package Versions [:bar] :percent', {
+			total: (devLen + depLen), 
 			complete: chalk.green('='),
 			incomplete: '-',
 			width: 25,
-		}); bar.tick();
+		});
         if(!this.dev && dev) { 
 			this.dev = {};
 			for(const key in dev) this.store(key, dev, this.dev, bar); 
-		} bar.tick();
+		};
         if(!this.dep && dep) {
 			this.dep = {};
 			for(const key in dep) this.store(key, dep, this.dep, bar);
-		}; bar.tick();
+		};
 	}
 
 	concatPackages(t) {
