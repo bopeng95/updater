@@ -1,4 +1,4 @@
-const expect = require('chai').expect;
+const { expect } = require('chai');
 const path = require('path');
 const Packages = require('./../packages');
 const Helpers = require('./../helper');
@@ -6,11 +6,15 @@ const Helpers = require('./../helper');
 describe('Unit Tests', () => {
   	describe('Helper functions...', () => {
 		describe('retrievePackageInfo(location)', () => {
-			it('should not catch error with correct path if there is a package.json', () => {
+			it('should not throw error with a path if there is a package.json', () => {
 				const loc = path.join(process.cwd());
 				const result = Helpers.retrievePackageInfo(loc);
 				expect(result).not.to.be.instanceOf(Error);
 				expect(result).not.equal(undefined);
+			});
+			it('should throw error with a path if there is not a package.json', () => {
+				const loc = path.join(process.cwd(), '/../');
+				expect(Helpers.retrievePackageInfo.bind(loc)).to.throw(Error);
 			});
 		});
 	});

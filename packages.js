@@ -2,6 +2,8 @@ const chalk = require('chalk');
 const semver = require('semver');
 const ProgressBar = require('progress');
 const { execSync } = require('child_process');
+const logSymbols = require('log-symbols');
+const log = console.log;
 
 class Packages {
     constructor() {
@@ -9,6 +11,15 @@ class Packages {
 		this.dep = null;
 		this.longest = 12;
 		this.latest = 'up-2-d8';
+		this.everything = false;
+		this.stable = [
+			'npm i -D ',
+			'npm i -S ',
+		];
+		this.recent = [
+			'npm i -D ',
+			'npm i -S ',
+		];
 	}
 
 	getMax(obj) {
@@ -34,17 +45,18 @@ class Packages {
 			min = semver.valid(semver.coerce(min[min.length-2]));
 			min = (min === current) ? this.latest : min;
 		}; b.tick();
+		if(min !== this.latest || maj !== this.latest) { this.everything = true; }
 		type[key] = { curr: current, minor: min, major: maj };
 	}
 
 	storeData(dev, dep) {
 		const devLen = (dev) ? Object.keys(dev).length : 0;
 		const depLen = (dep) ? Object.keys(dep).length : 0;
-		console.log();
+		log();
 		const bar = new ProgressBar('Retrieving Data [:bar] :percent', {
 			total: (devLen + depLen) * 3 + 3, 
 			complete: chalk.green('='),
-			incomplete: chalk.red('-'),
+			incomplete: '-',
 			width: 25,
 		}); bar.tick();
         if(!this.dev && dev) { 
@@ -56,39 +68,60 @@ class Packages {
 			for(const key in dep) this.store(key, dep, this.dep, bar);
 		}; bar.tick();
 	}
+
+	concatPackages(t) {
+		const type = (t === 'stable') ? 'minor' : 'major';
+		for(const key in this.dev) {
+			const val = this.dev[key][type];
+			if(val !== this.latest) this[t][0] += `${key}@${val} `;
+		}
+		for(const key in this.dep) {
+			const val = this.dep[key][type];
+			if(val !== this.latest) this[t][1] += `${key}@${val} `;
+		}
+	}
 	
 	title(type, num, n) {
-        console.log(`\n${chalk.underline.bold(type)}\n`);
-        console.log(chalk.magenta.bold('Name'.padEnd(num)), chalk.magenta.bold('Current'.padEnd(n)), chalk.magenta.bold('Stable'.padEnd(n)), chalk.magenta.bold('Most Recent'.padEnd(n)));
+        log(`\n${chalk.underline.bold(type)}\n`);
+        log(chalk.magenta.bold('Name'.padEnd(num)), chalk.magenta.bold('Current'.padEnd(n)), chalk.magenta.bold('Stable'.padEnd(n)), chalk.magenta.bold('Most Recent'.padEnd(n)));
 	}
 	
-	printStyle(obj, num, n) {
+	printStyle(obj, num, n, fn = norm) {
 		for(const key in obj) { 
-			let { curr, minor, major } = obj[key];
-			minor = (minor === this.latest) ? chalk.green(minor.padEnd(n)) : chalk.yellow(minor.padEnd(n));
-			major = (major === this.latest) ? chalk.green(major.padEnd(n)) : chalk.red(major.padEnd(n));
-			console.log(key.padEnd(num), curr.padEnd(n), minor, major);
-		} console.log();
+			if(fn(obj[key])) {
+				let { curr, minor, major } = obj[key];
+				minor = (minor === this.latest) ? chalk.green(minor.padEnd(n)) : chalk.yellow(minor.padEnd(n));
+				major = (major === this.latest) ? chalk.green(major.padEnd(n)) : chalk.red(major.padEnd(n));
+				log(key.padEnd(num), curr.padEnd(n), minor, major);
+			}
+		} log();
 	}
 
-    printDep() {
+    printDep(fn = norm) {
         if(this.dep) {
-			this.title('dependencies', this.longest + 3, 12);
-			this.printStyle(this.dep, this.longest + 3, 12);
-        } else console.log(chalk.black.bgGreen(`\n No dependencies `));
+			this.title('dependencies', this.longest + 3, 12, fn);
+			this.printStyle(this.dep, this.longest + 3, 12, fn);
+        } else log(chalk.black.bgGreen(`\n No dependencies `));
 	}
 	
-	printDev() {
+	printDev(fn = norm) {
         if(this.dev) {
-			this.title('devDependencies', this.longest + 3, 12);
-			this.printStyle(this.dev, this.longest + 3, 12);
-        } else console.log(chalk.black.bgGreen(`\n No devDependencies `));
+			this.title('devDependencies', this.longest + 3, 12, fn);
+			this.printStyle(this.dev, this.longest + 3, 12, fn);
+        } else log(chalk.black.bgGreen(`\n No devDependencies `));
 	}
 
-	printAll() {
-		this.printDev();
-		this.printDep();
+	printAll(fn = norm) {
+		if(this.everything === true) {
+			this.printDev(fn);
+			this.printDep(fn);
+		} else {
+			log(chalk.bold(`\n${logSymbols.success} Everything is up to date!\n`));
+			process.exit(0);
+		};
 	}
 }
+
+const norm = (x) => { return true; };
 
 module.exports = Packages;
