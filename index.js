@@ -33,7 +33,7 @@ pkg.storeData(devDependencies, dependencies);
 pkg.getLongestLength();
 pkg.printAll(all);
 
-const input = ['stable','recent', 'nothing'];
+const input = ['stable', 'recent', 'nothing'];
 ipt(input, { message: 'pick something' })
 .then(picked => Aid.processUserRequest(picked[0], input, pkg, location))
 .catch(err => { 

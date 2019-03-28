@@ -1,6 +1,10 @@
 # @bopeng95/updater
 
 ![npm scoped](https://img.shields.io/badge/npm-v1.0.0-orange.svg)
-![npm scoped](https://img.shields.io/badge/npm%20registry-false-ff69b4.svg)
+![npm scoped](https://img.shields.io/badge/npm%20registry-true-ff69b4.svg)
 
-Currently still developing in local bin by `npm link` under `upd` command
+`npm install -g @bopeng95/updater`
+
+`upd <directory with package.json>`
+
+choose to have a stable or recent update for dependencies

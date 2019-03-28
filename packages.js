@@ -83,7 +83,7 @@ class Packages {
         log(chalk.magenta.bold('Name'.padEnd(num)), chalk.magenta.bold('Current'.padEnd(n)), chalk.magenta.bold('Stable'.padEnd(n)), chalk.magenta.bold('Most Recent'.padEnd(n)));
 	}
 	
-	printStyle(obj, num, n, fn = norm) {
+	printStyle(obj, num, n, fn) {
 		for(const key in obj) { 
 			if(fn(obj[key])) {
 				let { curr, minor, major } = obj[key];
@@ -94,21 +94,21 @@ class Packages {
 		} log();
 	}
 
-    printDep(fn = norm) {
+    printDep(fn) {
         if(this.dep) {
 			this.title('dependencies', this.longest + 3, 12, fn);
 			this.printStyle(this.dep, this.longest + 3, 12, fn);
         } else log(chalk.black.bgGreen(`\n No dependencies `));
 	}
 	
-	printDev(fn = norm) {
+	printDev(fn) {
         if(this.dev) {
 			this.title('devDependencies', this.longest + 3, 12, fn);
 			this.printStyle(this.dev, this.longest + 3, 12, fn);
         } else log(chalk.black.bgGreen(`\n No devDependencies `));
 	}
 
-	printAll(fn = norm) {
+	printAll(fn) {
 		if(this.everything === true) {
 			this.printDev(fn);
 			this.printDep(fn);
@@ -118,7 +118,5 @@ class Packages {
 		};
 	}
 }
-
-const norm = (x) => { return true; };
 
 module.exports = Packages;

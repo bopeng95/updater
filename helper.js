@@ -1,7 +1,6 @@
 const chalk = require('chalk');
 const readPkg = require('read-pkg');
 const logSymbols = require('log-symbols');
-const { execSync } = require('child_process');
 const execa = require('execa');
 const Listr = require('listr');
 const ipt = require('ipt');
@@ -83,7 +82,7 @@ function endProcess(input, type, loc, dev, dep) {
                 for(let i = 0; i < depd.length-1; i++) {
                     arr.push({
                         title: depd[i],
-                        task: () => execa('npm', ['i', '-D', depd[i]], { cwd: loc })
+                        task: () => execa('npm', ['i', '-S', depd[i]], { cwd: loc })
                                     .catch(err => { throw err.message; })
                     })
                 } return new Listr(arr);
