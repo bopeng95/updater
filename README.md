@@ -11,4 +11,4 @@
 
 choose to have a stable or recent update for dependencies
 
-<img src="docs/example.png" width="300">
+<img src="docs/example.png" width="375">
