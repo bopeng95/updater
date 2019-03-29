@@ -10,3 +10,5 @@
 `upd <directory with package.json> --all` to show all dependencies 
 
 choose to have a stable or recent update for dependencies
+
+![picture](docs/example.png)
